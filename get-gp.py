@@ -1,7 +1,7 @@
 import requests
 import json
 
-def getData(requestURL = '', jsonFileURL = '', pretyPrint = True, debug = False):
+def getData(requestURL = '', jsonFileURL = '', prettyPrint = True, debug = False):
     
     if requestURL == '':
 
@@ -9,19 +9,18 @@ def getData(requestURL = '', jsonFileURL = '', pretyPrint = True, debug = False)
             jsonFileURL = 'config.json'
 
     
-        #extracts the config and compoles it to non prety mode
+        #extracts the config and compoles it to non pretty mode
         with open(jsonFileURL) as json_file:
-            if pretyPrint == True:
+            if prettyPrint == True:
                 lines = json_file.readlines()
                 json_file = '\t'.join([line.strip() for line in lines])
             #print(json_file)
             config = json.loads(json_file)
             #print(config["requestaddress"])
+    
+    requestURL = config["requestaddress"]
 
     #sends the get request to the server
-    if requestURL == '':
-        requestURL = config["requestaddress"]
-
     data = requests.get(requestURL)
     #print(data.text)
     #tells py its a json file
