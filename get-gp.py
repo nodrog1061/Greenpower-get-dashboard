@@ -1,17 +1,28 @@
 import requests
 import json
 
-def getData():
-    #extracts the config and compoles it to non prety mode
-    with open('config.json') as json_file:
-        lines = json_file.readlines()
-        json_file = '\t'.join([line.strip() for line in lines])
-        #print(json_file)
-        config = json.loads(json_file)
-        #print(config["requestaddress"])
+def getData(requestURL = '', jsonFileURL = '', pretyPrint = True, debug = False):
+    
+    if requestURL == '':
+
+        if jsonFileURL == '':
+            jsonFileURL = 'config.json'
+
+    
+        #extracts the config and compoles it to non prety mode
+        with open(jsonFileURL) as json_file:
+            if pretyPrint == True:
+                lines = json_file.readlines()
+                json_file = '\t'.join([line.strip() for line in lines])
+            #print(json_file)
+            config = json.loads(json_file)
+            #print(config["requestaddress"])
 
     #sends the get request to the server
-    data = requests.get(config["requestaddress"])
+    if requestURL == '':
+        requestURL = config["requestaddress"]
+
+    data = requests.get(requestURL)
     #print(data.text)
     #tells py its a json file
     data = json.loads(data.text)
@@ -37,6 +48,7 @@ def getData():
     return voltage,voltsLower,current,speed,throttle,rpm,time,lat,lon,temp1,temp2,track,currLap
 
 #debug
-""" voltage,voltsLower,current,speed,throttle,rpm,time,lat,lon,temp1,temp2,track,currLap = getData()
+#voltage,voltsLower,current,speed,throttle,rpm,time,lat,lon,temp1,temp2,track,currLap = getData()
+print(getData())
 
-print(time) """
+#print(time)
